@@ -1,0 +1,99 @@
+ACCIÓN trabajo_C ES
+AMBIENTE
+    nodo = REGISTRO
+        tiempo: N(4);
+        dist_Tierra: REAL;
+        velocidad: REAL;
+        energia_c: REAL;
+        energia_p: REAL;
+        prox: PUNTERO A nodo;
+    FIN REGISTRO;
+    prim, p, q: PUNTERO A nodo;
+    opc: 1..5;
+    FUNCIÓN menu_principal() ES
+        ESC("Menú princiapl de simulación");
+        ESC("1. Cargar datos de entrada.");
+        ESC("2. Mostrar las constantes del sistema de vuelo (gravedades, masa, distancia y posición).");
+        ESC("3. Ejecutar simulación.");
+        ESC("4. Ver resultados.");
+        ESC("5. Salir.");
+        LEER(opc);
+    FIN FUNCIÓN;
+    FUNCIÓN cargar_datos() ES
+        ESC("Vamos a ingresar los datos de entrada para la simulación.");
+        vel_ini := 0;
+        MIENTRAS (vel_ini < 10500) O (vel_ini > 11500) HACER
+            ESC("Ingrese la velocidad inicial (km/s en formato entero,dd - 10500..11500 recomendado): ");
+            LEER(vel_ini);
+            SEGÚN (vel_ini) HACER
+                < 0: ESC("Error. Velocidad inicial no debe ser negativa.");
+                < 10500: ESC("La nave no alcanza la Luna.");
+                > 11500: ESC("No corresponde a una TLI real.");
+                otro: ESC("Velocidad inicial lista.");
+            FIN SEGÚN;
+        FIN MIENTRAS;
+        masa_nave := 0;
+        MIENTRAS (masa_nave < 5000) O (masa_nave > 50000) ENTONCES
+            ESC("Ingrese la masa de la nave (kg en formato entero): ");
+            LEER(masa_nave);
+            SEGÚN (masa_nave) HACER
+                < 0: ESC("Error. Masa de nave no debe ser negativa.");
+                < 5000: ESC("Debe ser una nave, no una cápsula.");
+                > 50000: ESC("Nave demasiada pesada.");
+                otro: ESC("Masa de la nave lista.");
+            FIN SEGÚN;
+        FIN MIENTRAS;
+        altura := 0;
+        MIENTRAS (altura < 180) O (altura > 1000) ENTONCES
+            LEER("Ingrese la altura de órbita baja (km en formato entero): ");
+            LEER(altura);
+            SEGÚN (altura) HACER
+                < 0: ESC("Error. La altura en negativo indica salir desde el núcleo de la Tierra.");
+                < 180: ESC("Error. La órbita decae rápido por arrastre atmosférico residual.");
+                > 1000: ESC("Imposible. Esta altura ya es órbita media.");
+                otro: ESC("Altura baja válida.");
+            FIN SEGÚN;
+        FIN MIENTRAS;
+        delta_tiempo := 0;
+        MIENTRAS (delta_tiempo < 13900) O (delta_tiempo > 40000) ENTONCES
+            ESC("Ingrese el delta del tiempo (seg en formato entero): ");
+            LEER(delta_tiempo);
+            SEGÚN (delta_tiempo) HACER
+                < 0: ESC("Error. Tiempo no es negativo.");
+                < 13900: ESC("Implicaría realizar 25 datos de muestra y puede ralentizarse.");
+                > 30000: ESC("Pocos datos de muestra.");
+                otro: ESC("Tiempo delta listo.");
+            FIN SEGÚN;
+        FIN MIENTRAS;
+    FIN FUNCIÓN;
+    FUNCIÓN mostrar_constantes() ES
+        .
+    FIN FUNCIÓN;
+    FUNCIÓN ejecutar_simulacion() ES
+        .
+    FIN FUNCIÓN;
+    FUNCIÓN guardar_historia() ES
+        .
+    FIN FUNCIÓN;
+    FUNCIÓN mostrar_resultados() ES
+        .
+    FIN FUNCIÓN;
+    FUNCIÓN calcular_aceleracion() ES
+        .
+    FIN FUNCIÓN;
+    FUNCIÓN calcular_energias() ES
+        .
+    FIN FUNCIÓN;
+    FUNCIÓN validar_entrada() ES
+        .
+    FIN FUNCIÓN;
+PROCESO
+    menu_principal();
+    SEGÚN opc() HACER
+        = 1: cargar_datos();
+        = 2: mostrar_constantes();
+        = 3: ejecutar_simulación();
+        = 4: mostrar_resultados();
+        = 5: ESC("Muchas gracias por utilizar la simulación.");
+    FIN SEGÚN;
+FIN ACCIÓN.
