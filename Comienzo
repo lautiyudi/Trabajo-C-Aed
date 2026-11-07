@@ -1,5 +1,5 @@
 ACCIÓN trabajo_C ES
-AMBIENTE
+    AMBIENTE
     nodo = REGISTRO
         tiempo: N(4);
         dist_Tierra: REAL;
@@ -10,6 +10,7 @@ AMBIENTE
     FIN REGISTRO;
     prim, p, q: PUNTERO A nodo;
     opc: 1..5;
+
     FUNCIÓN menu_principal() ES
         ESC("Menú princiapl de simulación");
         ESC("1. Cargar datos de entrada.");
@@ -19,6 +20,7 @@ AMBIENTE
         ESC("5. Salir.");
         LEER(opc);
     FIN FUNCIÓN;
+
     FUNCIÓN cargar_datos() ES
         ESC("Vamos a ingresar los datos de entrada para la simulación.");
         vel_ini := 0;
@@ -66,9 +68,28 @@ AMBIENTE
             FIN SEGÚN;
         FIN MIENTRAS;
     FIN FUNCIÓN;
+
     FUNCIÓN mostrar_constantes() ES
-        .
-    FIN FUNCIÓN;
+
+        ESC(" CONSTANTES DEL SISTEMA ARTEMIS")
+
+        ESC("Gravedad terrestre: ", GT, " m/s²")
+
+        ESC("Masa de la Tierra: ", MT, " kg")
+
+        ESC("Masa de la Luna: ", ML, " kg")
+
+        ESC("Distancia Tierra-Luna: ", D / 1000, " km")
+
+        ESC("Posicion aproximada de L1 desde la Tierra: ", L1 / 1000, " km")
+    FIN FUNCIÓN
+    
+    GT = 9.80
+    MT = 5.972 * 10 ** 24
+    ML = 7.35 * 10 ** 22
+    D = 384000000
+    L1 = 326030000
+
     FUNCIÓN ejecutar_simulacion() ES
         .
     FIN FUNCIÓN;
@@ -87,7 +108,8 @@ AMBIENTE
     FUNCIÓN validar_entrada() ES
         .
     FIN FUNCIÓN;
-PROCESO
+
+    PROCESO
     menu_principal();
     SEGÚN opc() HACER
         = 1: cargar_datos();
@@ -96,4 +118,5 @@ PROCESO
         = 4: mostrar_resultados();
         = 5: ESC("Muchas gracias por utilizar la simulación.");
     FIN SEGÚN;
+
 FIN ACCIÓN.
