@@ -6,6 +6,7 @@ ACCIÓN trabajo_C ES
         velocidad: REAL;
         energia_c: REAL;
         energia_p: REAL;
+        energia_m: REAL;
         prox: PUNTERO A nodo;
     FIN REGISTRO;
     prim, p, q: PUNTERO A nodo;
@@ -25,7 +26,7 @@ ACCIÓN trabajo_C ES
         ESC("Vamos a ingresar los datos de entrada para la simulación.");
         vel_ini := 0;
         MIENTRAS (vel_ini < 10500) O (vel_ini > 11500) HACER
-            ESC("Ingrese la velocidad inicial (km/s en formato entero,dd - 10500..11500 recomendado): ");
+            ESC("Ingrese la velocidad inicial (m/s en formato entero,dd - 10500..11500 recomendado): ");
             LEER(vel_ini);
             SEGÚN (vel_ini) HACER
                 < 0: ESC("Error. Velocidad inicial no debe ser negativa.");
@@ -73,6 +74,8 @@ ACCIÓN trabajo_C ES
 
         ESC(" CONSTANTES DEL SISTEMA ARTEMIS")
 
+        ESC("Radio de la Tierra: ", RT, " km");
+
         ESC("Gravedad terrestre: ", GT, " m/s²")
 
         ESC("Masa de la Tierra: ", MT, " kg")
@@ -84,26 +87,60 @@ ACCIÓN trabajo_C ES
         ESC("Posicion aproximada de L1 desde la Tierra: ", L1 / 1000, " km")
     FIN FUNCIÓN
     
-    GT = 9.80
+    GT = 9.80 
+    GU = 6.674 x (10 ** -11) // N.m²/kg²   --  es la que se utiliza con las masas
     MT = 5.972 * 10 ** 24
     ML = 7.35 * 10 ** 22
     D = 384000000
     L1 = 326030000
+    RT = 6371
 
+    FUNCIÓN guardar_historia() ES
+        // guardando en una lista simple enlazada de forma encolada
+        NUEVO(p);
+        *p.dist_tierra := R;
+        calcular_aceleracion();
+        *p.velocidad := vel_ini + acel * delta_tiempo;
+        calcular_energias();
+        SI (prim = NIL) ENTONCES // única inserción
+            *p.tiempo := 0 + delta_tiempo;
+            prim := p;
+        SINO // inserción al final
+            *p.tiempo := *q.tiempo + delta_tiempo;
+            *q.prox := p;
+        FIN SI;
+        q := p;
+        *p.prox := NIL;
+    FIN FUNCIÓN;
     FUNCIÓN ejecutar_simulacion() ES
         .
     FIN FUNCIÓN;
-    FUNCIÓN guardar_historia() ES
-        .
-    FIN FUNCIÓN;
     FUNCIÓN mostrar_resultados() ES
-        .
+        p := prim;
+        SI (p = NIL) ENTONCES
+            ESC("No has realizado la simulación. No hay datos para mostrar.");
+        SINO
+            ESC("| TIEMPO | DISTANCIA AL CENTRO DE LA TIERRA | VELOCIDAD | ENERGÍA CINÉTICA | ENERGÍA POTENCIAL | ENERGÍA MECÁNICA |");
+        FIN SI;
+        MIENTRAS (p <> NIL) HACER
+            ESC(*p.tiempo, *p.dist_tierra, *p.velocidad, *p.energia_c, *p.energia_p, *p.energia_m);
+            p := *p.prox;
+        FIN MIENTRAS;
+        ESC("Fin de los resultados.");
     FIN FUNCIÓN;
     FUNCIÓN calcular_aceleracion() ES
-        .
+        SI (prim = NIL) ENTONCES
+            R := RT + altura;
+        SINO
+            R := R + *q.velocidad * delta_tiempo;
+        FIN SI;
+        acel := - (GU * MT / (R ** 2)) + (GU * ML / ((D/1000 - R) ** 2))
     FIN FUNCIÓN;
     FUNCIÓN calcular_energias() ES
-        .
+        // Energía cinética
+        *p.energia_c := 0,5 * masa_nave * vel_ini ** 2
+        *p.energia_p := - (GU * MT * masa_nave / R) - (GU * ML * masa_nave / (D - R))
+        *p.energia_m := *p.energia_c + *p.energia_p
     FIN FUNCIÓN;
     FUNCIÓN validar_entrada() ES
         .
@@ -111,6 +148,7 @@ ACCIÓN trabajo_C ES
 
     PROCESO
     menu_principal();
+    prim := NIL;
     SEGÚN opc() HACER
         = 1: cargar_datos();
         = 2: mostrar_constantes();
