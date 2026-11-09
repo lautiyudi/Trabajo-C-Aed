@@ -1,5 +1,6 @@
 ACCIÓN trabajo_C ES
-    AMBIENTE
+AMBIENTE
+
     nodo = REGISTRO
         tiempo: N(4);
         dist_Tierra: REAL;
@@ -112,9 +113,11 @@ ACCIÓN trabajo_C ES
         q := p;
         *p.prox := NIL;
     FIN FUNCIÓN;
+
     FUNCIÓN ejecutar_simulacion() ES
-        .
+        // Acá tendríamos que mostrar con ASCII las cosas de vuelo (nave, Tierra, Luna, etc.)
     FIN FUNCIÓN;
+    
     FUNCIÓN mostrar_resultados() ES
         p := prim;
         SI (p = NIL) ENTONCES
@@ -128,6 +131,7 @@ ACCIÓN trabajo_C ES
         FIN MIENTRAS;
         ESC("Fin de los resultados.");
     FIN FUNCIÓN;
+
     FUNCIÓN calcular_aceleracion() ES
         SI (prim = NIL) ENTONCES
             R := RT + altura;
@@ -136,14 +140,16 @@ ACCIÓN trabajo_C ES
         FIN SI;
         acel := - (GU * MT / (R ** 2)) + (GU * ML / ((D/1000 - R) ** 2))
     FIN FUNCIÓN;
+
     FUNCIÓN calcular_energias() ES
         // Energía cinética
         *p.energia_c := 0,5 * masa_nave * vel_ini ** 2
         *p.energia_p := - (GU * MT * masa_nave / R) - (GU * ML * masa_nave / (D - R))
         *p.energia_m := *p.energia_c + *p.energia_p
     FIN FUNCIÓN;
+
     FUNCIÓN validar_entrada() ES
-        .
+        // Acá tendría que ir algo para validar entradas, pero creo que todo ya tiene
     FIN FUNCIÓN;
 
     PROCESO
