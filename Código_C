@@ -1,1 +1,29 @@
+#include <stdio.h>
+#include <stdlib.h>
 
+typedef struct nodo {
+    int tiempo;
+    float dist_Tierra;
+    float velocidad;
+    float energia_c;
+    float energia_p;
+    float energia_m;
+    struct nodo *prox;
+} nodo;
+nodo *prim, *p, *q;
+
+int opc;
+void menu_principal() {
+    printf("Menú principal de simulación\n");
+    printf("1. Cargar datos de entrada.\n");
+    printf("2. Mostrar las constantes del sistema de vuelo (gravedades, masa, distancia y posición).\n");
+    printf("3. Ejecutar simulación.\n");
+    printf("4. Ver resultados.\n");
+    printf("5. Salir.\n");
+    scanf("%d", &opc);
+}
+
+int main() {
+    
+    return 0;
+}
