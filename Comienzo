@@ -12,6 +12,9 @@ AMBIENTE
     FIN REGISTRO;
     prim, p, q: PUNTERO A nodo;
     opc: 1..5;
+    vel_ini: N(5,2);
+    masa_nave, altura, delta_tiempo, i: ENTERO;
+    acel, pasos: REAL;
 
     FUNCIÓN menu_principal() ES
         ESC("Menú princiapl de simulación");
@@ -49,7 +52,7 @@ AMBIENTE
         FIN MIENTRAS;
         altura := 0;
         MIENTRAS (altura < 180) O (altura > 1000) ENTONCES
-            LEER("Ingrese la altura de órbita baja (km en formato entero): ");
+            ESC("Ingrese la altura de órbita baja (km en formato entero): ");
             LEER(altura);
             SEGÚN (altura) HACER
                 < 0: ESC("Error. La altura en negativo indica salir desde el núcleo de la Tierra.");
@@ -68,54 +71,53 @@ AMBIENTE
                 > 30000: ESC("Pocos datos de muestra.");
                 otro: ESC("Tiempo delta listo.");
             FIN SEGÚN;
+            pasos := delta_tiempo DIV D;
         FIN MIENTRAS;
     FIN FUNCIÓN;
+   
+    GT = 9.80;
+    GU = 6.674 x (10 ** -11); // N.m²/kg²   --  es la que se utiliza con las masas
+    MT = 5.972 * 10 ** 24;
+    ML = 7.35 * 10 ** 22;
+    D = 384000;
+    L1 = 326030000;
+    RT = 6371;
 
-    FUNCIÓN mostrar_constantes() ES
+    PROCEDIMIENTO mostrar_constantes() ES
 
-        ESC(" CONSTANTES DEL SISTEMA ARTEMIS")
+        ESC("CONSTANTES DEL SISTEMA ARTEMIS");
 
         ESC("Radio de la Tierra: ", RT, " km");
 
-        ESC("Gravedad terrestre: ", GT, " m/s²")
+        ESC("Gravedad terrestre: ", GT, " m/s²");
 
-        ESC("Masa de la Tierra: ", MT, " kg")
+        ESC("Gravedad universal: ", "GU, " m/s²");
 
-        ESC("Masa de la Luna: ", ML, " kg")
+        ESC("Masa de la Tierra: ", MT, " kg");
 
-        ESC("Distancia Tierra-Luna: ", D / 1000, " km")
+        ESC("Masa de la Luna: ", ML, " kg");
 
-        ESC("Posicion aproximada de L1 desde la Tierra: ", L1 / 1000, " km")
-    FIN FUNCIÓN
+        ESC("Distancia Tierra-Luna: ", D, " km");
+
+        ESC("Posicion aproximada de L1 desde la Tierra: ", L1 / 1000, " km");
+    FIN PROCEDIMIENTO;
     
-    GT = 9.80 
-    GU = 6.674 x (10 ** -11) // N.m²/kg²   --  es la que se utiliza con las masas
-    MT = 5.972 * 10 ** 24
-    ML = 7.35 * 10 ** 22
-    D = 384000000
-    L1 = 326030000
-    RT = 6371
-
-    FUNCIÓN guardar_historia() ES
+    FUNCIÓN guardar_historia(tiempo_actual: ENTERO; dist_km: ENTERO; vel_actual: N(5,2)) ES
         // guardando en una lista simple enlazada de forma encolada
         NUEVO(p);
         *p.dist_tierra := R;
         calcular_aceleracion();
-        *p.velocidad := vel_ini + acel * delta_tiempo;
+        *p.velocidad := vel_actual + acel * tiempo_actual;
         calcular_energias();
         SI (prim = NIL) ENTONCES // única inserción
-            *p.tiempo := 0 + delta_tiempo;
+            *p.tiempo := 0 + tiempo_actual;
             prim := p;
         SINO // inserción al final
-            *p.tiempo := *q.tiempo + delta_tiempo;
+            *p.tiempo := *q.tiempo + tiempo_actual;
             *q.prox := p;
         FIN SI;
         q := p;
         *p.prox := NIL;
-    FIN FUNCIÓN;
-
-    FUNCIÓN ejecutar_simulacion() ES
-        // Acá tendríamos que mostrar con ASCII las cosas de vuelo (nave, Tierra, Luna, etc.)
     FIN FUNCIÓN;
     
     FUNCIÓN mostrar_resultados() ES
@@ -126,7 +128,7 @@ AMBIENTE
             ESC("| TIEMPO | DISTANCIA AL CENTRO DE LA TIERRA | VELOCIDAD | ENERGÍA CINÉTICA | ENERGÍA POTENCIAL | ENERGÍA MECÁNICA |");
         FIN SI;
         MIENTRAS (p <> NIL) HACER
-            ESC(*p.tiempo, *p.dist_tierra, *p.velocidad, *p.energia_c, *p.energia_p, *p.energia_m);
+            ESC("| ", *p.tiempo, " | ", *p.dist_tierra, " | ", *p.velocidad, " | ", *p.energia_c, " | ", *p.energia_p, " | ", *p.energia_m, " |");
             p := *p.prox;
         FIN MIENTRAS;
         ESC("Fin de los resultados.");
@@ -138,14 +140,23 @@ AMBIENTE
         SINO
             R := R + *q.velocidad * delta_tiempo;
         FIN SI;
-        acel := - (GU * MT / (R ** 2)) + (GU * ML / ((D/1000 - R) ** 2))
+        acel := - (GU * MT / (R ** 2)) + (GU * ML / ((D - R) ** 2));
     FIN FUNCIÓN;
 
     FUNCIÓN calcular_energias() ES
         // Energía cinética
-        *p.energia_c := 0,5 * masa_nave * vel_ini ** 2
-        *p.energia_p := - (GU * MT * masa_nave / R) - (GU * ML * masa_nave / (D - R))
-        *p.energia_m := *p.energia_c + *p.energia_p
+        *p.energia_c := 0,5 * masa_nave * (vel_ini ** )2;
+        // Energía potencial
+        *p.energia_p := - (GU * MT * masa_nave / R) - (GU * ML * masa_nave / (D - R));
+        // Energía mecánica
+        *p.energia_m := *p.energia_c + *p.energia_p;
+    FIN FUNCIÓN;
+
+    FUNCIÓN ejecutar_simulacion() ES
+        // Acá tendríamos que mostrar con ASCII las cosas de vuelo (nave, Tierra, Luna, etc.)
+        PARA (i := 1 HASTA pasos) HACER
+            guardar_historia(delta_tiempo, R, vel_ini);
+        FIN PARA;
     FIN FUNCIÓN;
 
     FUNCIÓN validar_entrada() ES
@@ -153,14 +164,18 @@ AMBIENTE
     FIN FUNCIÓN;
 
     PROCESO
-    menu_principal();
     prim := NIL;
-    SEGÚN opc() HACER
-        = 1: cargar_datos();
-        = 2: mostrar_constantes();
-        = 3: ejecutar_simulación();
-        = 4: mostrar_resultados();
-        = 5: ESC("Muchas gracias por utilizar la simulación.");
-    FIN SEGÚN;
-
+    opc := 0;
+    MIENTRAS (opc <> 5) HACER
+        menu_principal();
+        SEGÚN (opc) HACER
+            = 1: cargar_datos();
+            = 2: mostrar_constantes();
+            = 3: ejecutar_simulacion();
+            = 4: mostrar_resultados();
+            = 5: ESC("Muchas gracias por utilizar la simulación.");
+            otro: ESC("Error, fuera de rango.");
+        FIN SEGÚN;
+    FIN MIENTRAS;
+    ESC("Gracias por utilizar la simulación.");
 FIN ACCIÓN.
