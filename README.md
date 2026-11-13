@@ -4,11 +4,15 @@
 
 *Carrera:* Ingeniería en Sistemas de Información
 
+
 *Universidad:* Universidad Tecnológica Nacional — Facultad Regional Resistencia
+
 
 *Materia:* Algoritmos y Estructuras de Datos
 
+
 *Comisión:* 1.1 (A)
+
 
 *Integrantes:*
 
