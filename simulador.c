@@ -119,3 +119,15 @@ int cargar_datos(DatosEntrada *datos) {
     return 1;
 }
 
+void mostrar_constantes(void) {
+    puts("\n--- CONSTANTES DEL SISTEMA ARTEMIS ---");
+    printf("Gravedad superficial terrestre: %.2f m/s^2\n", GRAVEDAD_SUPERFICIE);
+    printf("Gravitacion universal G:        %.3e N*m^2/kg^2\n", G);
+    printf("Masa de la Tierra:             %.3e kg\n", MASA_TIERRA);
+    printf("Masa de la Luna:               %.3e kg\n", MASA_LUNA);
+    printf("Radio de la Tierra:            %.0f km\n", RADIO_TIERRA / 1000.0);
+    printf("Distancia Tierra-Luna:         %.0f km\n", DISTANCIA_TL / 1000.0);
+    printf("L1 aproximado (desde Tierra):  %.0f km\n", L1_APROX / 1000.0);
+    printf("Igualdad de gravedad (modelo): %.0f km\n", posicion_equilibrio() / 1000.0);
+    puts("NOTA: L1 y el punto de igualdad de gravedad NO son iguales.");
+}
