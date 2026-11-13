@@ -4,15 +4,11 @@
 
 *Carrera:* Ingeniería en Sistemas de Información
 
-
 *Universidad:* Universidad Tecnológica Nacional — Facultad Regional Resistencia
-
 
 *Materia:* Algoritmos y Estructuras de Datos
 
-
 *Comisión:* 1.1 (A)
-
 
 *Integrantes:*
 
@@ -99,10 +95,9 @@ make
 ./artemis
 ```
 
-
  \n 
 
- ## 5. Metodología de desarrollo y trabajo colaborativo
+## 5. Metodología de desarrollo y trabajo colaborativo
 
 ### Desarrollo inicial en pseudocódigo
 
@@ -133,3 +128,25 @@ Mediante Git pudimos descargar las actualizaciones del repositorio, incorporar m
 También coordinamos entre los integrantes qué modificaciones se incorporarían al repositorio, con el objetivo de reducir conflictos y mantener una estructura ordenada.
 
 El trabajo colaborativo nos permitió comprender mejor la importancia de la modularización, la comunicación entre integrantes y la integración de diferentes partes de un mismo programa.
+
+
+## 6. Registro del uso de Inteligencia Artificial
+
+Durante el desarrollo del trabajo utilizamos ChatGPT, de OpenAI, como herramienta de apoyo para comprender conceptos, analizar alternativas de implementación y asistir en la construcción del programa en C.
+
+Su utilización incluyó las siguientes actividades:
+
+* Organización del algoritmo: asistencia para analizar el pseudocódigo inicial y su adaptación al lenguaje C.
+* Modularización: propuestas para organizar el proyecto en archivos .c y .h, separando las declaraciones de las implementaciones.
+* Generación y revisión de código: propuestas de implementación de funciones, estructuras de datos, cálculos físicos y validaciones.
+* Comprensión de conceptos: explicaciones sobre punteros, uso de static, void, registros, listas enlazadas y memoria dinámica.
+* Cálculos físicos: asistencia para representar las fuerzas gravitatorias y las energías utilizadas por el simulador.
+* Compilación y GitHub: orientación sobre comandos de compilación, gestión de ramas, actualización del repositorio y registro de cambios.
+* Documentación: asistencia para organizar y redactar el presente archivo README.
+
+La inteligencia artificial se utilizó como una herramienta de consulta y asistencia técnica. Las propuestas obtenidas se incorporaron al proceso de desarrollo y estudio del proyecto, procurando comprender las instrucciones y su relación con los contenidos de la materia.
+
+El equipo es responsable de revisar, probar, integrar y explicar el funcionamiento del código presentado.
+
+
+
