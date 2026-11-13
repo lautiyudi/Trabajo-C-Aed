@@ -131,3 +131,84 @@ void mostrar_constantes(void) {
     printf("Igualdad de gravedad (modelo): %.0f km\n", posicion_equilibrio() / 1000.0);
     puts("NOTA: L1 y el punto de igualdad de gravedad NO son iguales.");
 }
+
+
+int ejecutar_simulacion(const DatosEntrada *datos, Simulacion *sim) {
+    double tiempo = 0;
+    double x = RADIO_TIERRA + datos->altura_km * 1000.0;
+    double v = datos->velocidad_inicial;
+    double x_eq = posicion_equilibrio();
+    double t_proxima_muestra = datos->intervalo_muestras;
+    double t_ultimo_guardado = 0;
+    double x_anterior;
+
+    if (!datos->cargados) {
+        puts("Error: primero debe cargar los datos.");
+        return 0;
+    }
+
+    liberar_historia(sim);
+    puts("\n--- INYECCION TRANSLUNAR: SIMULACION ASCII ---");
+    puts("T = Tierra | O = Orion | L = Luna");
+    puts("Modelo 1D simplificado: Tierra y Luna fijas; motores apagados.");
+    puts("El programa calcula cada 0.1 s y dibuja cada muestra solicitada.");
+    puts("(La posicion en el dibujo es proporcional a la distancia.)");
+
+    guardar_evento(sim, "Inicio TLI", tiempo, x, v);
+    if (!guardar_historia(sim, tiempo, x, v, datos->masa_nave)) goto sin_memoria;
+    dibujar_ascii(tiempo, x);
+
+    while (tiempo < TIEMPO_MAXIMO && x < DISTANCIA_TL - RADIO_LUNA &&
+           x > RADIO_TIERRA && v > 0) {
+        double a = calcular_aceleracion(x);
+        x_anterior = x;
+
+        /* Euler-Cromer: primero velocidad, despues posicion. */
+        v = v + a * PASO_FISICO;
+        x = x + v * PASO_FISICO;
+        tiempo = tiempo + PASO_FISICO;
+
+        if (x >= DISTANCIA_TL - RADIO_LUNA) x = DISTANCIA_TL - RADIO_LUNA;
+        if (x <= RADIO_TIERRA) x = RADIO_TIERRA;
+
+        if (x_anterior < L1_APROX && x >= L1_APROX) {
+            guardar_evento(sim, "Cruce L1 aproximado", tiempo, x, v);
+        }
+        if (x_anterior < x_eq && x >= x_eq) {
+            guardar_evento(sim, "Igualdad de gravedad", tiempo, x, v);
+        }
+
+        if (tiempo >= t_proxima_muestra) {
+            if (!guardar_historia(sim, tiempo, x, v, datos->masa_nave)) goto sin_memoria;
+            dibujar_ascii(tiempo, x);
+            t_ultimo_guardado = tiempo;
+            t_proxima_muestra += datos->intervalo_muestras;
+        }
+    }
+
+    if (tiempo > t_ultimo_guardado) {
+        if (!guardar_historia(sim, tiempo, x, v, datos->masa_nave)) goto sin_memoria;
+        dibujar_ascii(tiempo, x);
+    }
+
+    guardar_evento(sim, "Final de simulacion", tiempo, x, v);
+    if (x >= DISTANCIA_TL - RADIO_LUNA) {
+        sim->motivo = LLEGADA_LUNAR;
+        puts("RESULTADO: Orion alcanzo la superficie lunar en el modelo 1D.");
+    } else if (v <= 0 || x <= RADIO_TIERRA) {
+        sim->motivo = VELOCIDAD_AGOTADA;
+        puts("RESULTADO: Orion dejo de avanzar antes de llegar a la Luna.");
+    } else {
+        sim->motivo = LIMITE_DE_TIEMPO;
+        puts("RESULTADO: se alcanzo el limite de 10 dias de simulacion.");
+    }
+    sim->realizada = 1;
+    printf("Muestras guardadas en la lista: %d\n", sim->cant_muestras);
+    puts("Vea la opcion 4 para consultar la tabla y el analisis.");
+    return 1;
+
+sin_memoria:
+    puts("Error: no hay memoria suficiente para guardar la simulacion.");
+    liberar_historia(sim);
+    return 0;
+}
