@@ -212,3 +212,61 @@ sin_memoria:
     liberar_historia(sim);
     return 0;
 }
+
+void mostrar_resultados(const DatosEntrada *datos, const Simulacion *sim) {
+    const Nodo *p;
+    int i;
+    double x0, xeq, u0, ueq, energia0, diferencia_potencial, adicional;
+
+    if (!sim->realizada || sim->prim == NULL) {
+        puts("Primero debe ejecutar una simulacion con la opcion 3.");
+        return;
+    }
+
+    puts("\n--- HISTORIAL: LISTA SIMPLEMENTE ENLAZADA ---");
+    puts("Tiempo(h) | Dist.Tierra(km) | Vel.(m/s) | K(J)       | U(J)       | Em(J)");
+    puts("----------------------------------------------------------------------------");
+    p = sim->prim;
+    while (p != NULL) {
+        printf("%9.2f | %15.0f | %10.2f | %10.3e | %10.3e | %10.3e\n",
+               p->tiempo / 3600.0, p->dist_tierra / 1000.0,
+               p->velocidad, p->energia_c, p->energia_p, p->energia_m);
+        p = p->prox;
+    }
+
+    puts("\n--- EVENTOS DESTACADOS: ARREGLO ---");
+    puts("Evento                        | Tiempo(h) | Distancia(km) | Velocidad(m/s)");
+    puts("------------------------------------------------------------------------");
+    for (i = 0; i < sim->cant_eventos; i++) {
+        const Evento *e = &sim->eventos[i];
+        printf("%-29s | %9.2f | %13.0f | %14.2f\n",
+               e->nombre, e->tiempo / 3600.0, e->posicion / 1000.0,
+               e->velocidad);
+    }
+
+    /* Analisis asociado a los incisos b y c de la consigna. */
+    x0 = RADIO_TIERRA + datos->altura_km * 1000.0;
+    xeq = posicion_equilibrio();
+    u0 = energia_potencial_especifica(x0);           /* J/kg */
+    ueq = energia_potencial_especifica(xeq);         /* J/kg */
+    energia0 = 0.5 * datos->velocidad_inicial * datos->velocidad_inicial + u0;
+    diferencia_potencial = ueq - u0;
+    adicional = ueq - energia0;
+    if (adicional < 0) adicional = 0;
+
+    puts("\n--- ANALISIS DEL ESCENARIO 3 ---");
+    puts("a) Sin motores, Orion sigue por inercia; las fuerzas gravitatorias");
+    puts("   modifican su velocidad. Cerca de Tierra domina la desaceleracion.");
+    printf("b) Energia cinetica inicial: %.6e J\n",
+           0.5 * datos->masa_nave * datos->velocidad_inicial * datos->velocidad_inicial);
+    printf("c) Punto de igualdad gravitatoria: %.0f km desde Tierra.\n", xeq / 1000.0);
+    printf("   Incremento de energia potencial por kg: %.6e J/kg\n", diferencia_potencial);
+    printf("   Aporte adicional ideal con la velocidad inicial: %.6e J/kg\n", adicional);
+    puts("   (Solo considera energias de este modelo gravitatorio fijo 1D.)");
+    puts("d) Salir del pozo gravitatorio terrestre requiere mas energia que");
+    puts("   alejarse de la Luna. El combustible real depende tambien de la");
+    puts("   trayectoria, los motores y las maniobras; no se calcula aqui.");
+
+    puts("\nADVERTENCIA: es un modelo unidimensional, NO una trayectoria");
+    puts("de retorno libre real. La Luna se supone fija y no se simula orbita.");
+}
