@@ -79,7 +79,25 @@ Se utiliza un modelo físico simplificado en una dimensión, con la Tierra y la 
 
 **Además, se emplearon punteros, memoria dinámica mediante malloc y liberación de memoria mediante free.**
 
-
 ## 4. Compilación y ejecución
+
+En la carpeta que contiene los `.c` y `.h`:
+
+Windows con GCC (MinGW-w64):
+
+```powershell
+gcc -std=c11 -Wall -Wextra -Wpedantic main.c simulador.c validaciones.c -o artemis.exe -lm
+.\artemis.exe
+```
+
+También se puede ejecutar `compilar.bat` para compilar.
+
+Linux/macOS con GCC:
+
+```bash
+make
+./artemis
+```
+
 
  \n 
