@@ -101,3 +101,35 @@ make
 
 
  \n 
+
+ ## 5. Metodología de desarrollo y trabajo colaborativo
+
+### Desarrollo inicial en pseudocódigo
+
+Como primera etapa, realizamos el planteamiento y desarrollo del algoritmo utilizando el *pseudocódigo trabajado en la cátedra de Algoritmos y Estructuras de Datos*.
+
+Esto nos permitió organizar la solución antes de comenzar a programar, identificar las variables necesarias, establecer los procesos principales y definir las estructuras de datos que utilizaríamos.
+
+También analizamos el funcionamiento del menú, los cálculos físicos, las validaciones y la forma de almacenar los resultados de la simulación.
+
+Una vez definida la lógica del programa, comenzamos a trasladar progresivamente el pseudocódigo al lenguaje C, adaptando las instrucciones y las estructuras a la sintaxis propia del lenguaje.
+
+### Organización y coordinación del equipo
+
+El desarrollo se organizó mediante el trabajo colaborativo de los cuatro integrantes.
+
+Para ello, nos pusimos de acuerdo sobre qué partes debía desarrollar, revisar o integrar cada uno, procurando distribuir las responsabilidades de manera equilibrada.
+
+Decidimos modularizar el programa en diferentes archivos para evitar concentrar todas las instrucciones en un único archivo fuente.
+
+Esta organización permitió trabajar sobre distintas funcionalidades, como el menú principal, las validaciones, los cálculos físicos, las estructuras de datos y la presentación de resultados.
+
+### Uso de Git y GitHub
+
+Utilizamos GitHub como repositorio compartido para organizar y registrar los avances del proyecto.
+
+Mediante Git pudimos descargar las actualizaciones del repositorio, incorporar modificaciones y realizar commits descriptivos para identificar los cambios efectuados.
+
+También coordinamos entre los integrantes qué modificaciones se incorporarían al repositorio, con el objetivo de reducir conflictos y mantener una estructura ordenada.
+
+El trabajo colaborativo nos permitió comprender mejor la importancia de la modularización, la comunicación entre integrantes y la integración de diferentes partes de un mismo programa.
