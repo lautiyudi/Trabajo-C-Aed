@@ -1,6 +1,6 @@
 # TRABAJO FINAL INTEGRADOR — LABORATORIO DE C
 
-## 1. Integrantes y comisión
+## 1. Integrantes,comisión y link video
 
 *Carrera:* Ingeniería en Sistemas de Información
 
@@ -16,6 +16,8 @@
 * Lucas Alfonso Gurrieri Agustini
 * Lucas Emanuel Monticelli
 * Lautaro Amir Yudi
+
+*link video: https://www.youtube.com/watch?v=jW0bxDEgsA8
 
 ## 2. Descripción del proyecto
 
