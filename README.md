@@ -90,6 +90,8 @@ gcc -std=c11 -Wall -Wextra -Wpedantic main.c simulador.c validaciones.c -o artem
 
 También se puede ejecutar `compilar.bat` para compilar.
 
+O ejecutar directamente el Artemis.exe
+
 Linux/macOS con GCC:
 
 ```bash
