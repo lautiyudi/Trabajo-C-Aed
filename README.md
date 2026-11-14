@@ -95,8 +95,6 @@ make
 ./artemis
 ```
 
- \n 
-
 ## 5. Metodología de desarrollo y trabajo colaborativo
 
 ### Desarrollo inicial en pseudocódigo
@@ -146,7 +144,6 @@ Su utilización incluyó las siguientes actividades:
 La inteligencia artificial se utilizó como una herramienta de consulta y asistencia técnica. Las propuestas obtenidas se incorporaron al proceso de desarrollo y estudio del proyecto, procurando comprender las instrucciones y su relación con los contenidos de la materia.
 
 El equipo es responsable de revisar, probar, integrar y explicar el funcionamiento del código presentado.
-
 
 ## 7. Conclusión
 
