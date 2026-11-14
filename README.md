@@ -17,7 +17,7 @@
 * Lucas Emanuel Monticelli
 * Lautaro Amir Yudi
 
-*link video: https://www.youtube.com/watch?v=jW0bxDEgsA8
+link video: https://www.youtube.com/watch?v=jW0bxDEgsA8
 
 ## 2. Descripción del proyecto
 
