@@ -129,7 +129,6 @@ También coordinamos entre los integrantes qué modificaciones se incorporarían
 
 El trabajo colaborativo nos permitió comprender mejor la importancia de la modularización, la comunicación entre integrantes y la integración de diferentes partes de un mismo programa.
 
-
 ## 6. Registro del uso de Inteligencia Artificial
 
 Durante el desarrollo del trabajo utilizamos ChatGPT, de OpenAI, como herramienta de apoyo para comprender conceptos, analizar alternativas de implementación y asistir en la construcción del programa en C.
@@ -148,5 +147,15 @@ La inteligencia artificial se utilizó como una herramienta de consulta y asiste
 
 El equipo es responsable de revisar, probar, integrar y explicar el funcionamiento del código presentado.
 
+
+## 7. Conclusión
+
+El desarrollo de este trabajo nos permitió aplicar de manera práctica los contenidos estudiados durante la materia.
+
+Partimos de un algoritmo expresado en pseudocódigo y avanzamos hacia su implementación en C, incorporando funciones, estructuras de control, registros, arreglos, listas enlazadas, punteros y memoria dinámica.
+
+Además de los aspectos técnicos, el proyecto nos permitió trabajar de manera coordinada, distribuir responsabilidades y utilizar GitHub como herramienta de colaboración.
+
+Como resultado, desarrollamos un simulador modular que relaciona los conceptos de programación con un escenario físico basado en la misión Artemis.
 
 
